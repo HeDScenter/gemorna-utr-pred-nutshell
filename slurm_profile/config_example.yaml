@@ -1,4 +1,4 @@
-# Snakemake SLURM profile for gemorna-nutshell.
+# Snakemake SLURM profile for gemorna-utr-pred-nutshell.
 # Copy to slurm_profile/config.yaml and fill in your cluster-specific values.
 
 # Executor configuration (Snakemake 8+)

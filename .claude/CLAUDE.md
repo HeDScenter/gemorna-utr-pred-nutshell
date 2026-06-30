@@ -1,4 +1,4 @@
-# gemorna-nutshell — Pipeline Developer Guide
+# gemorna-utr-pred-nutshell — Pipeline Developer Guide
 
 A **Snakemake pipeline** that integrates one method (`<METHOD>`) over an input
 FASTA and produces a single results table. Built from `nutshell-pipeline-template`.

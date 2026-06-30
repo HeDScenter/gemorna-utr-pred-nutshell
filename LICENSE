@@ -1,18 +1,17 @@
-gemorna-nutshell — non-commercial research license
-====================================================
+gemorna-utr-pred-nutshell — non-commercial research license
+===========================================================
 
-The gemorna-nutshell pipeline wraps and bundles two upstream tools whose
-licenses restrict commercial use and/or redistribution:
+The gemorna-utr-pred-nutshell pipeline wraps and bundles upstream tools whose
+license restricts commercial use:
 
-  • GEMORNA   (RainaBio)        — non-commercial research only
-  • LinearFold (Huang Lab, OSU) — no redistribution for a fee
+  • GEMORNA (RainaBio) — non-commercial research only
 
-Because gemorna-nutshell is a derivative work of these tools and reproduces
-their assets (model checkpoints, vocabulary, source code via Apptainer image),
-the COMPOSITE work — including the wrapper code in this repository — inherits
-their combined restrictions. The text of each upstream license is reproduced
-verbatim in THIRD_PARTY_LICENSES.md and must travel with any copy of this
-repository or its build artefacts (.sif image, Docker image, etc.).
+Because gemorna-utr-pred-nutshell is a derivative work of GEMORNA and reproduces
+its assets (model checkpoints, vocabulary, source code via Apptainer image), the
+COMPOSITE work — including the wrapper code in this repository — inherits
+GEMORNA's restriction. The text of GEMORNA's license is reproduced verbatim
+in THIRD_PARTY_LICENSES.md and must travel with any copy of this repository
+or its build artefacts (.sif image, Docker image, etc.).
 
 In particular, by accessing, downloading, or using this pipeline you agree:
 
@@ -22,12 +21,11 @@ In particular, by accessing, downloading, or using this pipeline you agree:
      standard academic practice.
   3. To retain this LICENSE file and THIRD_PARTY_LICENSES.md in every copy
      and modification.
-  4. To cite the upstream tools (GEMORNA paper, LinearFold paper) in any
-     academic work that uses results produced by this pipeline.
+  4. To cite the upstream GEMORNA paper in any academic work that uses
+     results produced by this pipeline.
 
 For commercial use, contact the GEMORNA corresponding author
-(caojicong@rainabio.com) and the LinearFold corresponding author
-(liang.huang.sh@gmail.com) to obtain separate commercial licenses.
+(caojicong@rainabio.com) to obtain a separate commercial license.
 
 THE PIPELINE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -37,5 +35,4 @@ OTHER LIABILITY ARISING FROM, OUT OF, OR IN CONNECTION WITH THIS PIPELINE OR
 ITS USE.
 
 All rights not expressly granted herein are reserved by the respective
-upstream licensors (RainaBio, Huang Lab / Oregon State University) and the
-HeDS Center.
+upstream licensor (RainaBio) and the HeDS Center.

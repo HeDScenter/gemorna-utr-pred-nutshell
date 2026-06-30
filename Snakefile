@@ -1,4 +1,4 @@
-# Snakemake workflow for gemorna-nutshell
+# Snakemake workflow for gemorna-utr-pred-nutshell
 #
 # This skeleton fans OUT over the sequences in the input FASTA (one job per
 # sequence), then fans IN with a single concatenate step into one final table.

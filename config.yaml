@@ -1,4 +1,4 @@
-# Configuration file for the gemorna-nutshell pipeline.
+# Configuration file for the gemorna-utr-pred-nutshell pipeline.
 #
 # This file is the STANDARD config layout shared by every nutshell micro-service.
 # Keep the three top-level sections (masked_parameters, common_parameters,

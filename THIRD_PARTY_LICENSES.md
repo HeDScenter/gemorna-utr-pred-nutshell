@@ -1,6 +1,6 @@
 # Third-Party Licenses
 
-The gemorna-nutshell pipeline integrates the following upstream tools. Their
+The gemorna-utr-pred-nutshell pipeline integrates the following upstream tools. Their
 licenses are reproduced (or summarised + linked) below in dependency order:
 load-bearing tools first, then permissively-licensed Python dependencies.
 
@@ -13,9 +13,9 @@ licenses** (GEMORNA's). See the top-level `LICENSE` for the inherited terms.
 ## 1. GEMORNA (RainaBio)
 
 - **Upstream:** https://github.com/RainaBio/GEMORNA
-- **Used by:** every mode (CDS / 5utr_gen / 3utr_gen / 5utr_pred / 3utr_pred /
-  full_mrna). Source code, model checkpoints, and tokenizer vocabularies are
-  bundled into the Apptainer image.
+- **Used by:** modes 5utr_pred and 3utr_pred (UTR activity prediction).
+  Source code, activity-predictor model checkpoints, and tokenizer
+  vocabularies are bundled into the Apptainer image.
 - **License (verbatim):**
 
 > The Software is made publicly available by Licensor on Github for
@@ -45,42 +45,7 @@ licenses** (GEMORNA's). See the top-level `LICENSE` for the inherited terms.
 
 ---
 
-## 2. LinearFold (Huang Lab, Oregon State University)
-
-- **Upstream:** https://github.com/LinearFold/LinearFold
-- **Used by:** full_mrna mode (pair-ratio calculation for assembled mRNAs).
-  Built from source inside the Apptainer image (`apptainer.def`).
-- **Citation required:** Liang Huang, He Zhang, Dezhong Deng, Kai Zhao,
-  Kaibo Liu, David Hendrix, and David Mathews (2019). *LinearFold:
-  Linear-Time Approximate RNA Folding by 5'-to-3' Dynamic Programming and
-  Beam Search.* Bioinformatics 35, Special Issue of ISMB 2019 Proceedings.
-- **License (verbatim):**
-
-> Disclaimer and Copyright
->
-> The programs, library and source code of the LinearFold Package are free
-> software. They are distributed in the hope that they will be useful but
-> WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-> or FITNESS FOR A PARTICULAR PURPOSE.
->
-> Permission is granted for research, educational, and commercial use and
-> modification so long as 1) the package and any derived works are not
-> redistributed for any fee, other than media costs, 2) proper credit is
-> given to the authors. Please cite the following paper:
->
-> Liang Huang, He Zhang, Dezhong Deng, Kai Zhao, Kaibo Liu, David Hendrix,
-> and David Mathews (2019). LinearFold: Linear-Time Approximate RNA Folding
-> by 5'-to-3' Dynamic Programming and Beam Search. Bioinformatics, Vol. 35,
-> July 2019, Special Issue of ISMB 2019 Proceedings.
->
-> corresponding author: Liang Huang <liang.huang.sh@gmail.com>
->
-> If you want to include this software in a commercial product, please
-> contact the corresponding author.
-
----
-
-## 3. Snakemake
+## 2. Snakemake
 
 - **Upstream:** https://github.com/snakemake/snakemake
 - **Used by:** workflow orchestration (every mode). Pipeline entry-point.
@@ -108,7 +73,7 @@ licenses** (GEMORNA's). See the top-level `LICENSE` for the inherited terms.
 
 ---
 
-## 4. micromamba / mamba
+## 3. micromamba / mamba
 
 - **Upstream:** https://github.com/mamba-org/mamba
 - **Used by:** Apptainer image base — installs the GEMORNA conda env from
@@ -143,7 +108,7 @@ licenses** (GEMORNA's). See the top-level `LICENSE` for the inherited terms.
 
 ---
 
-## 5. Apptainer / Singularity-CE
+## 4. Apptainer / Singularity-CE
 
 - **Upstream:** https://github.com/apptainer/apptainer
 - **Used by:** containerised execution (`SIF_PATH` set).
@@ -156,7 +121,7 @@ BSD-3-Clause in 2018.
 
 ---
 
-## 6. Python scientific stack (transitive dependencies)
+## 5. Python scientific stack (transitive dependencies)
 
 These are pulled in by GEMORNA's `environment.yaml` and Snakemake's deps. All
 are permissively licensed and impose no additional constraints on the

@@ -1,0 +1,63 @@
+# Configuration file for the gemorna-nutshell pipeline.
+#
+# This file is the STANDARD config layout shared by every nutshell micro-service.
+# Keep the three top-level sections (masked_parameters, common_parameters,
+# advanced_parameters) — the section STRUCTURE is the standard. The parameters
+# themselves are specific to GEMORNA (https://github.com/RainaBio/GEMORNA);
+# what differs across sections is the audience:
+#   - masked_parameters   : paths and resource allocation, hidden from end-users
+#   - common_parameters   : basic knobs any user should be able to answer (shown by default)
+#   - advanced_parameters : expert knobs, available to all but masked by default
+# See .claude/CLAUDE.md ("The config standard") for the design rationale and
+# config.schema.yaml for per-field constraints + the canonical enum of modes.
+
+
+## masked_parameters — paths, GEMORNA assets, and resource allocation
+masked_parameters:
+
+  ### Input / output
+  input_dir:  "data"             # Directory (under RUN_DIR) holding sequence.fa (or sequence.fa.gz)
+  output_dir: "results"          # Directory (under RUN_DIR) where all outputs land
+  output_ext: "json"             # Final-output format: json, json.gz, csv, csv.gz, tsv, tsv.gz
+
+  ### Resources
+  resources:
+    # Total budget — controls how many jobs run in parallel in LOCAL execution.
+    # (On HPC, parallelism is governed by the SLURM profile instead.)
+    total_max_memory_gb: 16
+    total_threads: 4
+
+    # Per-rule limits — ONE block per rule in modules/*.smk.
+    # Used as --time / --mem on SLURM and as the local-mode `timeout` backstop.
+    predict_utr:                 # mode=5utr_pred, 3utr_pred, and UTR scoring in *_gen
+      max_memory_gb: 4
+      threads: 1
+      runtime: 30
+    concatenate:                 # final fan-in into results/final_output.<ext>
+      max_memory_gb: 4
+      threads: 1
+      runtime: 30
+
+  ### GEMORNA assets
+  # Defaults point at /opt/gemorna/* inside the Apptainer container. For native
+  # execution (no SIF_PATH) layer pipeline.local.yaml on top via
+  # PIPELINE_LOCAL_CONFIG to point these at your on-host GEMORNA checkout —
+  # see pipeline.local.yaml.example.
+  checkpoints:
+    utr5_pred: "/opt/gemorna/checkpoints/5utr.pt"            # 5' UTR activity predictor
+    utr3_pred: "/opt/gemorna/checkpoints/3utr.pt"            # 3' UTR activity predictor
+  vocab_dir:   "/opt/gemorna/vocab"                          # tokenizer vocabularies
+  gemorna_src: "/opt/gemorna/src"                            # GEMORNA src/ checkout
+
+
+common_parameters:
+
+  # This repo ships 5'/3' UTR activity prediction.
+  # See HeDScenter/gemorna-cds-opt-nutshell (CDS) and HeDScenter/gemorna-utr-gen-nutshell (UTR generation).
+  mode: 5utr_pred                # 5utr_pred | 3utr_pred
+
+  random_seed: 42                # Integer for reproducibility, or null for nondeterministic runs
+
+
+advanced_parameters: {}
+# Predictors are deterministic; no decoder, assembly, or motif knobs apply.

@@ -1,0 +1,23 @@
+# Snakemake SLURM profile for gemorna-nutshell.
+# Copy to slurm_profile/config.yaml and fill in your cluster-specific values.
+
+# Executor configuration (Snakemake 8+)
+executor: slurm
+
+# Default resources for all rules (override per-rule via masked_parameters.resources)
+default-resources:
+  mem_mb: 4000                         # 4 GB default per job
+  runtime: 30                          # minutes
+  slurm_account: "your_account_here"   # TODO: set your SLURM account
+
+# Workflow settings
+jobs: 100           # maximum parallel jobs submitted to SLURM
+keep-going: True    # continue with independent jobs if one fails
+rerun-incomplete: True
+retries: 2          # retry failed jobs up to 2 times
+printshellcmds: True
+use-conda: False
+
+# Container image is set globally via the `container:` directive in the Snakefile.
+# --use-apptainer is passed on the Snakemake command line in run_pipeline.sh,
+# which wraps each subjob in `apptainer exec $SIF_PATH` automatically.

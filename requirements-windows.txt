@@ -1,0 +1,23 @@
+# Native (no Apptainer) environment dependencies — Windows.
+# Installs everything needed to run the pipeline without the container image.
+#
+# System packages required separately (not pip-installable):
+#   - TODO: install your tool here (e.g. via conda-bioconda or a Windows installer).
+#     Many bioinformatics tools have no pip package and may be Linux/macOS only.
+#
+# snakemake-executor-plugin-slurm is omitted: SLURM is not available on Windows.
+#
+# For Linux/macOS use requirements-linux-macos.txt.
+#
+# Python version: 3.11 recommended (matches the container image)
+
+# ── Workflow ──────────────────────────────────────────────────────────────────
+snakemake==9.16.3
+# snakemake-executor-plugin-slurm omitted: SLURM is not available on Windows
+
+# ── Core pipeline ─────────────────────────────────────────────────────────────
+biopython
+
+# ── Test dependencies ─────────────────────────────────────────────────────────
+pyyaml
+jsonschema

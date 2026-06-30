@@ -1,0 +1,13 @@
+# Host environment dependencies — runs Snakemake on the host (container mode).
+# All pipeline dependencies (your tool, biopython, etc.) run inside the Apptainer container.
+#
+# To run the pipeline NATIVELY (no container), install instead:
+#   - requirements-linux-macos.txt   (Linux / macOS)
+#   - requirements-windows.txt        (Windows; SLURM executor omitted)
+
+snakemake==9.16.3
+snakemake-executor-plugin-slurm
+
+# Test dependencies
+pyyaml
+jsonschema

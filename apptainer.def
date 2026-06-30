@@ -1,0 +1,50 @@
+Bootstrap: docker
+From: mambaorg/micromamba:1.5.8
+
+%labels
+    Author HeDS platform
+    Version v0.1.0
+    Description gemorna-utr-pred-nutshell — GEMORNA conda env + UTR activity-predictor model assets
+
+%help
+    Apptainer container for the gemorna-utr-pred-nutshell pipeline.
+    Bundles the GEMORNA conda environment (Python 3.10, torch 2.2.0, etc.)
+    and the 5'/3' UTR activity-predictor checkpoints + vocab.
+
+    Build with:
+        apptainer build --fakeroot \
+            --build-arg GEMORNA_ROOT=/path/to/GEMORNA \
+            gemorna-utr-pred-nutshell.sif apptainer.def
+
+    Snakemake, scripts, and pipeline files live on the host and are
+    bind-mounted at runtime by run_pipeline.sh / run_pipeline_local.sh.
+
+%files
+    # Build context paths — supplied via --build-arg GEMORNA_ROOT=/path/to/GEMORNA.
+    # Example build command:
+    #   apptainer build gemorna-utr-pred-nutshell.sif apptainer.def \
+    #     --build-arg GEMORNA_ROOT=/Users/skailasam/softwares/GEMORNA
+    {{ GEMORNA_ROOT }}/checkpoints/5utr.pt         /opt/gemorna/checkpoints/5utr.pt
+    {{ GEMORNA_ROOT }}/checkpoints/3utr.pt         /opt/gemorna/checkpoints/3utr.pt
+    {{ GEMORNA_ROOT }}/vocab                       /opt/gemorna/vocab
+    {{ GEMORNA_ROOT }}/src                         /opt/gemorna/src
+    {{ GEMORNA_ROOT }}/environment.yaml            /opt/gemorna/environment.yaml
+
+%post
+    set -eux
+
+    # System tools — coreutils gives us GNU `timeout` (the local-executor backstop).
+    apt-get update && apt-get install -y --no-install-recommends \
+        coreutils build-essential git \
+        && rm -rf /var/lib/apt/lists/*
+
+    # Create the gemorna env from the bundled environment.yaml.
+    micromamba create -n gemorna -f /opt/gemorna/environment.yaml -y
+    micromamba clean --all -y
+
+%environment
+    export PATH=/opt/conda/envs/gemorna/bin:$PATH
+    export GEMORNA_HOME=/opt/gemorna
+
+%runscript
+    exec "$@"

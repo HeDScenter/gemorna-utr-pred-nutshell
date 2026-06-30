@@ -1,0 +1,41 @@
+gemorna-nutshell — non-commercial research license
+====================================================
+
+The gemorna-nutshell pipeline wraps and bundles two upstream tools whose
+licenses restrict commercial use and/or redistribution:
+
+  • GEMORNA   (RainaBio)        — non-commercial research only
+  • LinearFold (Huang Lab, OSU) — no redistribution for a fee
+
+Because gemorna-nutshell is a derivative work of these tools and reproduces
+their assets (model checkpoints, vocabulary, source code via Apptainer image),
+the COMPOSITE work — including the wrapper code in this repository — inherits
+their combined restrictions. The text of each upstream license is reproduced
+verbatim in THIRD_PARTY_LICENSES.md and must travel with any copy of this
+repository or its build artefacts (.sif image, Docker image, etc.).
+
+In particular, by accessing, downloading, or using this pipeline you agree:
+
+  1. To use it solely for non-commercial research purposes (per GEMORNA).
+  2. Not to redistribute it (or any derivative work) to third parties for a
+     fee, except as necessary to publish academic research in accordance with
+     standard academic practice.
+  3. To retain this LICENSE file and THIRD_PARTY_LICENSES.md in every copy
+     and modification.
+  4. To cite the upstream tools (GEMORNA paper, LinearFold paper) in any
+     academic work that uses results produced by this pipeline.
+
+For commercial use, contact the GEMORNA corresponding author
+(caojicong@rainabio.com) and the LinearFold corresponding author
+(liang.huang.sh@gmail.com) to obtain separate commercial licenses.
+
+THE PIPELINE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS, CONTRIBUTORS, OR HEDS CENTER BE LIABLE FOR ANY CLAIM, DAMAGES, OR
+OTHER LIABILITY ARISING FROM, OUT OF, OR IN CONNECTION WITH THIS PIPELINE OR
+ITS USE.
+
+All rights not expressly granted herein are reserved by the respective
+upstream licensors (RainaBio, Huang Lab / Oregon State University) and the
+HeDS Center.

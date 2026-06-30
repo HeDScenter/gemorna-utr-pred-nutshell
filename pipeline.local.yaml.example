@@ -1,0 +1,24 @@
+# pipeline.local.yaml.example — native-mode path overrides
+#
+# Copy to pipeline.local.yaml (or any path you like) and edit the values to
+# point at your local GEMORNA checkout (https://github.com/RainaBio/GEMORNA).
+# Then pass the file to run_pipeline_local.sh via the PIPELINE_LOCAL_CONFIG
+# environment variable:
+#
+#   PIPELINE_LOCAL_CONFIG=/abs/path/to/pipeline.local.yaml \
+#     bash /abs/path/to/gemorna-utr-pred-nutshell/run_pipeline_local.sh
+#
+# The runner adds this file as a second --configfile to Snakemake; values
+# here override the container's /opt/gemorna/* defaults baked into the
+# shipped config.yaml. Use absolute paths.
+#
+# This file is only consulted in native mode (SIF_PATH unset). When running
+# inside the Apptainer container, the /opt/gemorna/* paths in the SIF are
+# already correct.
+
+masked_parameters:
+  checkpoints:
+    utr5_pred: /path/to/GEMORNA/checkpoints/5utr.pt
+    utr3_pred: /path/to/GEMORNA/checkpoints/3utr.pt
+  vocab_dir:   /path/to/GEMORNA/vocab
+  gemorna_src: /path/to/GEMORNA/src

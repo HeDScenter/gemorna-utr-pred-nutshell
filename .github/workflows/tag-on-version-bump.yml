@@ -1,0 +1,42 @@
+name: Tag on version bump
+
+# Source of truth is config.schema.yaml's `version:` field. When it changes on
+# main, create the matching git tag vX.Y.Z (which GitHub turns into a Release).
+# The tagged commit therefore always carries the matching version field, so a
+# result's stamped pipeline_version provenance is exact.
+
+on:
+  push:
+    branches: [main]
+    paths: ['config.schema.yaml']
+
+permissions:
+  contents: write
+
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0          # need full history so tag push isn't rejected
+
+      - name: Read version and create tag if new
+        run: |
+          set -euo pipefail
+          VERSION=$(sed -nE 's/^version:[[:space:]]*"?([^"]+)"?[[:space:]]*$/\1/p' config.schema.yaml | head -1)
+          if [ -z "$VERSION" ]; then
+            echo "::error::No 'version:' field found in config.schema.yaml"
+            exit 1
+          fi
+          TAG="v${VERSION}"
+          echo "Schema version: $VERSION -> tag $TAG"
+
+          if git rev-parse -q --verify "refs/tags/${TAG}" >/dev/null; then
+            echo "Tag ${TAG} already exists — nothing to do."
+            exit 0
+          fi
+
+          git tag "${TAG}"
+          git push origin "${TAG}"
+          echo "Created and pushed ${TAG}."

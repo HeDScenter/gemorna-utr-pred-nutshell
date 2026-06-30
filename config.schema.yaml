@@ -1,0 +1,124 @@
+# JSON Schema (Draft-7) for config.yaml.
+# Mirrors every key in config.yaml with a description, default, and constraints.
+# tests/test_config.py validates config.yaml against this schema.
+#
+# Keep the three sections (masked_parameters, common_parameters,
+# advanced_parameters) — the section structure is the standard. The parameters
+# are method-specific; common_parameters are basic (shown by default),
+# advanced_parameters are expert (masked by default). Edit their
+# values/constraints when you extend the pipeline.
+
+$schema: http://json-schema.org/draft-07/schema#
+title: gemorna-utr-pred-nutshell Pipeline Config
+# Pipeline version — keep in sync with the git release tag. Read by nutshell-core
+# and stamped into each job's record so results carry the version that produced
+# them. The .github/workflows/tag-on-version-bump.yml workflow tags vX.Y.Z when
+# this field changes on main, so bumping it cuts a release.
+version: "0.1.0"
+type: object
+required: [masked_parameters, common_parameters, advanced_parameters]
+properties:
+
+  masked_parameters:
+    type: object
+    description: Input/output paths, GEMORNA assets, and resource allocation (hidden from end-users)
+    required: [input_dir, output_dir, resources, checkpoints, vocab_dir, gemorna_src]
+    properties:
+      input_dir:
+        type: string
+        description: Directory (under RUN_DIR) holding sequence.fa (or sequence.fa.gz)
+        default: data
+      output_dir:
+        type: string
+        description: Directory (under RUN_DIR) where all results land
+        default: results
+      output_ext:
+        type: string
+        description: Final output file format
+        default: json
+        enum: [json, json.gz, csv, csv.gz, tsv, tsv.gz]
+
+      resources:
+        type: object
+        description: Per-rule + global resource limits (parallelism on local, --time on SLURM)
+        required: [total_max_memory_gb, total_threads, predict_utr, concatenate]
+        properties:
+          total_max_memory_gb:
+            type: integer
+            description: Total memory in GB available to the whole pipeline (local parallelism cap)
+            default: 16
+            minimum: 1
+          total_threads:
+            type: integer
+            description: Total threads available to the whole pipeline (controls local parallelism)
+            default: 4
+            minimum: 1
+          predict_utr:
+            $ref: "#/$defs/RuleResources"
+            description: Per-job limits for the UTR predictor rules (mode=5utr_pred, 3utr_pred, and scoring in *_gen)
+          concatenate:
+            $ref: "#/$defs/RuleResources"
+            description: Per-job limits for the final concatenate_results rule
+
+      checkpoints:
+        type: object
+        description: Absolute paths to GEMORNA model checkpoints (container or on-host paths)
+        required: [utr5_pred, utr3_pred]
+        properties:
+          utr5_pred:
+            type: string
+            description: 5' UTR activity predictor checkpoint (e.g. 5utr.pt)
+          utr3_pred:
+            type: string
+            description: 3' UTR activity predictor checkpoint (e.g. 3utr.pt)
+      vocab_dir:
+        type: string
+        description: Directory holding GEMORNA's tokenizer vocabularies (cds_vocab, prot_vocab)
+      gemorna_src:
+        type: string
+        description: GEMORNA src/ checkout (contains generate.py, main_pred*UTR.py)
+
+  common_parameters:
+    type: object
+    description: Basic, method-specific knobs any user should be able to answer (shown by default)
+    required: [mode, random_seed]
+    properties:
+      mode:
+        type: string
+        description: >-
+          Which GEMORNA sub-DAG to run. This repo ships 5'/3' UTR activity
+          prediction; CDS lives in gemorna-cds-opt-nutshell and UTR generation
+          in gemorna-utr-gen-nutshell.
+        enum: [5utr_pred, 3utr_pred]
+        default: 5utr_pred
+      random_seed:
+        type: [integer, "null"]
+        description: Integer seed for reproducibility; null for nondeterministic runs
+        default: 42
+
+  advanced_parameters:
+    type: object
+    description: Expert knobs — none needed for the deterministic predictors
+    properties: {}
+
+$defs:
+  RuleResources:
+    type: object
+    description: Per-rule resource block (used by every entry under masked_parameters.resources)
+    required: [max_memory_gb, threads]
+    properties:
+      max_memory_gb:
+        type: integer
+        description: Maximum memory in GB per job
+        default: 4
+        minimum: 1
+      threads:
+        type: integer
+        description: Threads per job
+        default: 1
+        minimum: 1
+      runtime:
+        type: integer
+        description: Wall time per job in minutes (used by SLURM and as a local-mode `timeout` backstop)
+        default: 60
+        minimum: 1

@@ -1,0 +1,27 @@
+# Snakemake
+.snakemake/
+logs/
+
+# Apptainer/Singularity
+*.sif
+*.simg
+
+# Data and results
+results/
+runs/
+slurm_profile/config.yaml
+
+# Python
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+
+# MacOS
+.DS_Store
+
+# Local-only override config (per-host GEMORNA paths). Use pipeline.local.yaml.example as the template.
+pipeline.local.yaml
+
+# Smoke-test fixtures (real runs use absolute RUN_DIRs outside the repo)
+data/
